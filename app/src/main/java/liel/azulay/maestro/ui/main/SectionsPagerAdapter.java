@@ -2,6 +2,7 @@ package liel.azulay.maestro.ui.main;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         mContext = context;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position)
     {
@@ -48,4 +50,5 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         // Show 2 total pages.
         return 2;
     }
+
 }
