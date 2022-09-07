@@ -4,15 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
@@ -34,16 +35,6 @@ public class MainActivity extends AppCompatActivity
     private final String [] permissions = {Manifest.permission.RECORD_AUDIO};
     private String filename =  null;
 
-    public static void setLightStatusBar(View view, Activity activity)
-    {
-        int flags = view.getSystemUiVisibility();
-        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        view.setSystemUiVisibility(flags);
-        activity.getWindow().setStatusBarColor(activity.getColor(R.color.white));
-        TextView title = view.findViewById(R.id.title);
-        title.setTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.teal_200));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -51,9 +42,24 @@ public class MainActivity extends AppCompatActivity
 
         liel.azulay.maestro.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setLightStatusBar(this.findViewById(R.id.main_view), this);
 
+        ImageButton settings = findViewById(R.id.settings);
+        getWindow().setStatusBarColor(getColor(R.color.teal_200));
+        TextView title = findViewById(R.id.title);
         TabLayout tabLayout = findViewById(R.id.tabs);
+
+        int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                setLightTheme(settings, title, tabLayout);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                setDarkTheme(this, settings, title, tabLayout);
+                break;
+        }
+
         ViewPager2 viewPager2 = findViewById(R.id.view_pager);
 
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(this);
@@ -73,7 +79,6 @@ public class MainActivity extends AppCompatActivity
         filename = getExternalCacheDir().getAbsolutePath() +  "/audiorecordtest.3gp";
         FloatingActionButton fab = binding.fab;
         FloatingActionButton play = binding.play;
-        ImageButton settings = findViewById(R.id.settings);
         MediaRecorder recorder = new MediaRecorder();
         MediaPlayer player = new MediaPlayer();
         settings.setOnClickListener(view -> {
@@ -111,8 +116,24 @@ public class MainActivity extends AppCompatActivity
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
+    }
 
+    public void setDarkTheme(Activity activity, ImageButton settings, TextView title, TabLayout tabs)
+    {
+        settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings));
+        activity.findViewById(R.id.view_pager).setBackground(AppCompatResources.getDrawable(this, R.color.dark_mode));
+        title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_mode));
+        tabs.setTabTextColors(ContextCompat.getColorStateList(this, R.color.dark_mode));
+        tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.dark_mode));
 
+    }
+
+    public void setLightTheme(ImageButton settings, TextView title, TabLayout tabs)
+    {
+        settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings_dark_mode));
+        title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        tabs.setTabTextColors(ContextCompat.getColorStateList(this, R.color.white));
+        tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white));
     }
 
     @Override
@@ -137,7 +158,6 @@ public class MainActivity extends AppCompatActivity
         } catch (IOException e) {
             return;
         }
-
         recorder.start();
     }
 

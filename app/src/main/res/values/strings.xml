@@ -20,6 +20,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="session">start a session</string>
+    <string name="play">play a session</string>
     <string name="home">home</string>
     <string name="logs">logs</string>
 </resources>
