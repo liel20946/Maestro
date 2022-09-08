@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity
         }).attach();
 
         filename = getExternalCacheDir().getAbsolutePath() +  "/audiorecordtest.3gp";
-        FloatingActionButton fab = binding.fab;
-        FloatingActionButton play = binding.play;
+        FloatingActionButton start_session_btn = binding.sessionActivityBtn;
         MediaRecorder recorder = new MediaRecorder();
         MediaPlayer player = new MediaPlayer();
         settings.setOnClickListener(view -> {
@@ -91,30 +90,9 @@ public class MainActivity extends AppCompatActivity
         AtomicBoolean is_recording = new AtomicBoolean(false);
         AtomicBoolean is_playing = new AtomicBoolean(false);
 
-        fab.setOnClickListener(view -> {
-            if (!is_recording.get())
-            {
-                startRecording(recorder);
-                is_recording.set(true);
-            }
-            else
-            {
-                stopRecording(recorder);
-                is_recording.set(false);
-            }
-        });
-
-        play.setOnClickListener(view -> {
-            if (!is_playing.get())
-            {
-                startPlaying(player);
-                is_recording.set(true);
-            }
-            else
-            {
-                stopPlaying(player);
-                is_playing.set(false);
-            }
+        start_session_btn.setOnClickListener(view -> {
+            Intent record_session = new Intent(getBaseContext(), RecordSession.class);
+            startActivity(record_session);
         });
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -125,8 +103,6 @@ public class MainActivity extends AppCompatActivity
         settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings));
         activity.findViewById(R.id.view_pager).setBackground(AppCompatResources.getDrawable(this, R.color.dark_mode));
         title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_mode));
-
-
     }
 
     public void setLightTheme(ImageButton settings, TextView title)
