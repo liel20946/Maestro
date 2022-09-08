@@ -46,23 +46,25 @@ public class MainActivity extends AppCompatActivity
         ImageButton settings = findViewById(R.id.settings);
         getWindow().setStatusBarColor(getColor(R.color.teal_200));
         TextView title = findViewById(R.id.title);
-        TabLayout tabLayout = findViewById(R.id.tabs);
 
         int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         switch (currentNightMode) {
             case Configuration.UI_MODE_NIGHT_NO:
                 // Night mode is not active, we're using the light theme
-                setLightTheme(settings, title, tabLayout);
+                setLightTheme(settings, title);
                 break;
             case Configuration.UI_MODE_NIGHT_YES:
                 // Night mode is active, we're using dark theme
-                setDarkTheme(this, settings, title, tabLayout);
+                setDarkTheme(this, settings, title);
                 break;
         }
 
         ViewPager2 viewPager2 = findViewById(R.id.view_pager);
-
+        TabLayout tabLayout = findViewById(R.id.tabs);
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(this);
+
+        tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.sec_color));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.sec_color));
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) ->
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity
                     tab.setText(R.string.logs);
                 }
         }).attach();
+
         filename = getExternalCacheDir().getAbsolutePath() +  "/audiorecordtest.3gp";
         FloatingActionButton fab = binding.fab;
         FloatingActionButton play = binding.play;
@@ -115,25 +118,21 @@ public class MainActivity extends AppCompatActivity
         });
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
     }
 
-    public void setDarkTheme(Activity activity, ImageButton settings, TextView title, TabLayout tabs)
+    public void setDarkTheme(Activity activity, ImageButton settings, TextView title)
     {
         settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings));
         activity.findViewById(R.id.view_pager).setBackground(AppCompatResources.getDrawable(this, R.color.dark_mode));
         title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_mode));
-        tabs.setTabTextColors(ContextCompat.getColorStateList(this, R.color.dark_mode));
-        tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.dark_mode));
+
 
     }
 
-    public void setLightTheme(ImageButton settings, TextView title, TabLayout tabs)
+    public void setLightTheme(ImageButton settings, TextView title)
     {
         settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings_dark_mode));
         title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-        tabs.setTabTextColors(ContextCompat.getColorStateList(this, R.color.white));
-        tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white));
     }
 
     @Override
