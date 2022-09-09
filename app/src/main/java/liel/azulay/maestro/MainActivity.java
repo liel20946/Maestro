@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
     private final String [] permissions = {Manifest.permission.RECORD_AUDIO};
-    private String filename =  null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,15 +78,12 @@ public class MainActivity extends AppCompatActivity
                 }
         }).attach();
 
-        filename = getExternalCacheDir().getAbsolutePath() +  "/audiorecordtest.3gp";
         FloatingActionButton start_session_btn = binding.sessionActivityBtn;
-        MediaRecorder recorder = new MediaRecorder();
         MediaPlayer player = new MediaPlayer();
         settings.setOnClickListener(view -> {
             Intent setting_intent = new Intent(getBaseContext(), SettingsActivity.class);
             startActivity(setting_intent);
         });
-        AtomicBoolean is_recording = new AtomicBoolean(false);
         AtomicBoolean is_playing = new AtomicBoolean(false);
 
         start_session_btn.setOnClickListener(view -> {
@@ -122,37 +118,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void startRecording(MediaRecorder recorder) {
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setOutputFile(filename);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            recorder.prepare();
-        } catch (IOException e) {
-            return;
-        }
-        recorder.start();
-    }
-
-    private void stopRecording(MediaRecorder recorder) {
-        recorder.stop();
-        recorder.release();
-    }
-
-    private void startPlaying(MediaPlayer player) {
-        try {
-            player.setDataSource(filename);
-            player.prepare();
-            player.start();
-        } catch (IOException ignored) { //TODO:change !
-        }
-    }
-
-    private void stopPlaying(MediaPlayer player) {
-        player.release();
-    }
+//    private void startPlaying(MediaPlayer player) {
+//        try {
+//            player.setDataSource(filename);
+//            player.prepare();
+//            player.start();
+//        } catch (IOException ignored) { //TODO:change !
+//        }
+//    }
+//
+//    private void stopPlaying(MediaPlayer player) {
+//        player.release();
+//    }
 
 
 }

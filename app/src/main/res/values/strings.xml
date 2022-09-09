@@ -23,4 +23,7 @@
     <string name="play">play a session</string>
     <string name="home">home</string>
     <string name="logs">logs</string>
+    <string name="record_session">Record Session</string>
+    <string name="stop_recording">Stop</string>
+    <string name="starting_time">00:00</string>
 </resources>
