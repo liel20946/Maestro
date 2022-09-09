@@ -15,6 +15,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,9 +26,10 @@ public class RecordSession extends AppCompatActivity
 {
     private String file_name =  null;
     private int seconds = 0;
-    private int current_amp = 0;
     private boolean running;
     private  MediaRecorder recorder;
+    private Handler timer_handler;
+    private Handler drawing_handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,11 +62,14 @@ public class RecordSession extends AppCompatActivity
                 running = true;
                 runTimer();
                 startRecording(recorder);
+                start_drawing();
             }
             else
             {
                 running = false;
                 stopRecording(recorder);
+                timer_handler.removeCallbacksAndMessages(null);
+                drawing_handler.removeCallbacksAndMessages(null);
             }
         });
     }
@@ -98,9 +103,8 @@ public class RecordSession extends AppCompatActivity
     private void runTimer()
     {
         final TextView timeView = findViewById(R.id.stop_watch);
-        final Handler handler = new Handler();
-
-        handler.post(new Runnable() {
+        timer_handler = new Handler();
+        timer_handler.post(new Runnable() {
             @Override
             public void run()
             {
@@ -113,7 +117,7 @@ public class RecordSession extends AppCompatActivity
                     // Set the text view text.
                     timeView.setText(time);
                 }
-                handler.postDelayed(this, 1000);
+                timer_handler.postDelayed(this, 1000);
             }
         });
     }
@@ -139,21 +143,14 @@ public class RecordSession extends AppCompatActivity
 
     private void start_drawing()
     {
-        SurfaceView surface = findViewById(R.id.visualizerLineBar);
-        Canvas canvas = new Canvas();
-        Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStrokeWidth(1f);
-        final Handler handler = new Handler();
-
-        handler.post(new Runnable() {
+        drawing_handler = new Handler();
+        liel.azulay.maestro.ui.record.WaveView waveform = findViewById(R.id.visualizerLineBar);
+        drawing_handler.post(new Runnable() {
             @Override
             public void run()
             {
-                current_amp = recorder.getMaxAmplitude();
-                canvas.drawLine(0,0,20,current_amp,paint);
-
-                handler.postDelayed(this, 500);
+                waveform.add_amp(recorder.getMaxAmplitude());
+                drawing_handler.postDelayed(this, 100);
             }
         });
     }

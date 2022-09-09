@@ -6,14 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".RecordSession">
 
-    <SurfaceView
+    <liel.azulay.maestro.ui.record.WaveView
         android:id="@+id/visualizerLineBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="240dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stop_watch"
-        app:layout_constraintVertical_bias="0.55" />
+        app:layout_constraintVertical_bias="0.35000002" />
 
     <TextView
         android:id="@+id/stop_watch"
@@ -41,5 +37,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/visualizerLineBar"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintVertical_bias="0.25" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
