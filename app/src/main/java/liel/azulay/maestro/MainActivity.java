@@ -5,8 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
+//import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,8 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.concurrent.atomic.AtomicBoolean;
 
 import liel.azulay.maestro.databinding.ActivityMainBinding;
 import liel.azulay.maestro.ui.main.SectionsPagerAdapter;
@@ -31,8 +29,8 @@ import liel.azulay.maestro.ui.main.SectionsPagerAdapter;
 public class MainActivity extends AppCompatActivity
 {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private final String[] permissions = {Manifest.permission.RECORD_AUDIO};
     private boolean permissionToRecordAccepted = false;
-    private final String [] permissions = {Manifest.permission.RECORD_AUDIO};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,7 +45,8 @@ public class MainActivity extends AppCompatActivity
         TextView title = findViewById(R.id.title);
 
         int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        switch (currentNightMode) {
+        switch (currentNightMode)
+        {
             case Configuration.UI_MODE_NIGHT_NO:
                 // Night mode is not active, we're using the light theme
                 setLightTheme(settings, title);
@@ -71,20 +70,19 @@ public class MainActivity extends AppCompatActivity
             if (position == 0)
             {
                 tab.setText(R.string.home);
+            } else
+            {
+                tab.setText(R.string.logs);
             }
-            else
-                {
-                    tab.setText(R.string.logs);
-                }
         }).attach();
 
         FloatingActionButton start_session_btn = binding.sessionActivityBtn;
-        MediaPlayer player = new MediaPlayer();
+        //MediaPlayer player = new MediaPlayer();
         settings.setOnClickListener(view -> {
             Intent setting_intent = new Intent(getBaseContext(), SettingsActivity.class);
             startActivity(setting_intent);
         });
-        AtomicBoolean is_playing = new AtomicBoolean(false);
+        //AtomicBoolean is_playing = new AtomicBoolean(false);
 
         start_session_btn.setOnClickListener(view -> {
             Intent record_session = new Intent(getBaseContext(), RecordSession.class);
@@ -96,25 +94,27 @@ public class MainActivity extends AppCompatActivity
 
     public void setDarkTheme(Activity activity, ImageButton settings, TextView title)
     {
-        settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings));
-        activity.findViewById(R.id.view_pager).setBackground(AppCompatResources.getDrawable(this, R.color.dark_mode));
+        settings.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_settings));
+        activity.findViewById(R.id.view_pager).setBackground(AppCompatResources.getDrawable(this,
+                                                                                            R.color.dark_mode));
         title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_mode));
     }
 
     public void setLightTheme(ImageButton settings, TextView title)
     {
-        settings.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.ic_settings_dark_mode));
+        settings.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_settings_dark_mode));
         title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION)
         {
             permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
         }
-        if (!permissionToRecordAccepted ) finish();
+        if (!permissionToRecordAccepted) finish();
 
     }
 
@@ -130,6 +130,5 @@ public class MainActivity extends AppCompatActivity
 //    private void stopPlaying(MediaPlayer player) {
 //        player.release();
 //    }
-
 
 }

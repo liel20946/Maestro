@@ -20,7 +20,7 @@ public class WaveView extends View
     private final ArrayList<Float> amp_list = new ArrayList<>();
     private final ArrayList<RectF> spikes = new ArrayList<>();
 
-    private final float radius = 6f;
+    private final float radius = 3f;
     private final float width = 9f;
     private final float screen_width;
     private final int max_spikes;
@@ -40,7 +40,7 @@ public class WaveView extends View
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
-        spikes.forEach(react -> canvas.drawRoundRect(react,radius,radius,paint));
+        spikes.forEach(react -> canvas.drawRoundRect(react, radius, radius, paint));
     }
 
     public void add_amp(float amp)
@@ -49,20 +49,20 @@ public class WaveView extends View
         float norm = Math.min(amp / 10, screen_height);
         amp_list.add(norm);
         spikes.clear();
-        ArrayList<Float> current_amps = get_last(amp_list,max_spikes);
-        for (int i=0;i<current_amps.size();i++)
+        ArrayList<Float> current_amps = get_last(amp_list, max_spikes);
+        for (int i = 0; i < current_amps.size(); i++)
         {
-            float left = screen_width - i*(width+distance);
+            float left = screen_width - i * (width + distance);
             float top = screen_height / 2 - current_amps.get(i) / 2;
             float right = left + width;
             float bottom = top + current_amps.get(i);
-            spikes.add(new RectF(left,top,right,bottom));
+            spikes.add(new RectF(left, top, right, bottom));
         }
 
         invalidate();
     }
 
-    private ArrayList<Float> get_last(ArrayList<Float> list ,int n)
+    private ArrayList<Float> get_last(ArrayList<Float> list, int n)
     {
         int new_start = list.size() - n;
         if (new_start < 0)
@@ -71,7 +71,7 @@ public class WaveView extends View
         }
 
         ArrayList<Float> new_list = new ArrayList<>();
-        for (;new_start<list.size();new_start++)
+        for (; new_start < list.size(); new_start++)
         {
             new_list.add(list.get(new_start));
         }

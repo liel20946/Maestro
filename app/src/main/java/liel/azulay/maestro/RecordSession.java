@@ -24,10 +24,10 @@ import java.util.Locale;
 
 public class RecordSession extends AppCompatActivity
 {
-    private String file_name =  null;
+    private String file_name = null;
     private int seconds = 0;
     private boolean running;
-    private  MediaRecorder recorder;
+    private MediaRecorder recorder;
     private Handler timer_handler;
     private Handler drawing_handler;
 
@@ -41,7 +41,8 @@ public class RecordSession extends AppCompatActivity
         if (actionBar != null)
         {
             int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            switch (currentNightMode) {
+            switch (currentNightMode)
+            {
                 case Configuration.UI_MODE_NIGHT_NO:
                     // Night mode is not active, we're using the light theme
                     setLightTheme(actionBar);
@@ -52,7 +53,7 @@ public class RecordSession extends AppCompatActivity
                     break;
             }
         }
-        file_name = getExternalCacheDir().getAbsolutePath() +  "/audiorecordtest.3gp";
+        file_name = getExternalCacheDir().getAbsolutePath() + "/audiorecordtest.3gp";
         recorder = new MediaRecorder();
         Button record_btn = findViewById(R.id.record_btn);
         record_btn.setOnClickListener(view -> {
@@ -63,8 +64,7 @@ public class RecordSession extends AppCompatActivity
                 runTimer();
                 startRecording(recorder);
                 start_drawing();
-            }
-            else
+            } else
             {
                 running = false;
                 stopRecording(recorder);
@@ -104,14 +104,16 @@ public class RecordSession extends AppCompatActivity
     {
         final TextView timeView = findViewById(R.id.stop_watch);
         timer_handler = new Handler();
-        timer_handler.post(new Runnable() {
+        timer_handler.post(new Runnable()
+        {
             @Override
             public void run()
             {
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;
 
-                if (running) {
+                if (running)
+                {
                     seconds++;
                     String time = String.format(Locale.getDefault(), "%02d:%02d", minutes, secs);
                     // Set the text view text.
@@ -122,21 +124,25 @@ public class RecordSession extends AppCompatActivity
         });
     }
 
-    private void startRecording(MediaRecorder recorder) {
+    private void startRecording(MediaRecorder recorder)
+    {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setOutputFile(file_name);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-        try {
+        try
+        {
             recorder.prepare();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return;
         }
         recorder.start();
     }
 
-    private void stopRecording(MediaRecorder recorder) {
+    private void stopRecording(MediaRecorder recorder)
+    {
         recorder.stop();
         recorder.release();
     }
@@ -145,7 +151,8 @@ public class RecordSession extends AppCompatActivity
     {
         drawing_handler = new Handler();
         liel.azulay.maestro.ui.record.WaveView waveform = findViewById(R.id.visualizerLineBar);
-        drawing_handler.post(new Runnable() {
+        drawing_handler.post(new Runnable()
+        {
             @Override
             public void run()
             {
