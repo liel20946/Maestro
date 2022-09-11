@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ public class RecordSession extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
+            actionBar.setDisplayHomeAsUpEnabled(true);
             int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             switch (currentNightMode)
             {
@@ -70,6 +72,9 @@ public class RecordSession extends AppCompatActivity
                 stopRecording(recorder);
                 timer_handler.removeCallbacksAndMessages(null);
                 drawing_handler.removeCallbacksAndMessages(null);
+                Intent analyze_intent = new Intent(getBaseContext(),AnalyzeActivity.class);
+                startActivity(analyze_intent);
+                finish();
             }
         });
     }
@@ -83,7 +88,6 @@ public class RecordSession extends AppCompatActivity
 
     public void setDarkTheme(ActionBar actionBar)
     {
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(HtmlCompat.fromHtml("<font color='#121212'>Settings</font>",
                                                HtmlCompat.FROM_HTML_MODE_LEGACY));
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back_dark_mode);
@@ -94,7 +98,6 @@ public class RecordSession extends AppCompatActivity
 
     public void setLightTheme(ActionBar actionBar)
     {
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(HtmlCompat.fromHtml("<font color='#ffffff'>Settings</font>",
                                                HtmlCompat.FROM_HTML_MODE_LEGACY));
         actionBar.setHomeAsUpIndicator(R.drawable.back_btn);

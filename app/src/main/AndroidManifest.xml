@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Maestro">
         <activity
+            android:name=".AnalyzeActivity"
+            android:exported="false" />
+        <activity
             android:name=".RecordSession"
             android:exported="false" />
         <activity
