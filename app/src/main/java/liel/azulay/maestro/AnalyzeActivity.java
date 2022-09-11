@@ -9,6 +9,12 @@ import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class AnalyzeActivity extends AppCompatActivity
 {
 
@@ -34,11 +40,13 @@ public class AnalyzeActivity extends AppCompatActivity
                     break;
             }
         }
+
+        analyze();
     }
 
     public void setDarkTheme(ActionBar actionBar)
     {
-        actionBar.setTitle(HtmlCompat.fromHtml("<font color='#121212'>Settings</font>",
+        actionBar.setTitle(HtmlCompat.fromHtml("<font color='#121212'>Analyze</font>",
                                                HtmlCompat.FROM_HTML_MODE_LEGACY));
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back_dark_mode);
         actionBar.setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getApplicationContext(),
@@ -55,6 +63,29 @@ public class AnalyzeActivity extends AppCompatActivity
 
     private void analyze()
     {
+        File recording_file = new File( getExternalCacheDir().getAbsolutePath() + "/audiorecordtest.3gp");
+        byte[] b = new byte[1024];
+        FileInputStream fis = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try
+        {
+            fis = new FileInputStream(recording_file);
+        } catch (FileNotFoundException ignored){
+
+        }
+        if (fis != null)
+        {
+            try
+            {
+                for (int readNum; (readNum = fis.read(b)) != -1;) {
+                    bos.write(b, 0, readNum);
+                }
+            }catch (IOException ignored)
+            {
+            }
+
+        }
+        byte[] bytes = bos.toByteArray();
 
     }
 }
