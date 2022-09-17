@@ -14,10 +14,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class AnalyzeActivity extends AppCompatActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -85,7 +85,21 @@ public class AnalyzeActivity extends AppCompatActivity
             }
 
         }
+        ArrayList<Float> hertz_arr = new ArrayList<>();
         byte[] bytes = bos.toByteArray();
+        int last_val = bytes[0];
+        int last_pos = 0;
+        for (int i=0;i< bytes.length;i++)
+        {
+            if ((bytes[i]>0 && last_val <=0) || (bytes[i] < 0 && last_val >=0))
+            {
+                int elapsed_steps = i - last_pos;
+                last_pos = i;
+                float hertz = 1/((float)elapsed_steps/44100);
+                hertz_arr.add(hertz);
+            }
+            last_val = bytes[i];
+        }
 
     }
 }

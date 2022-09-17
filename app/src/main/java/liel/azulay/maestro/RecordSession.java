@@ -131,6 +131,7 @@ public class RecordSession extends AppCompatActivity
     {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setAudioSamplingRate(44100);
         recorder.setOutputFile(file_name);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
